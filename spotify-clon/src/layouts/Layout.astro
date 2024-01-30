@@ -1,5 +1,7 @@
 ---
 import AsideMenu from '../components/AsideMenu.astro';
+import {ViewTransitions} from 'astro:transitions';
+import { Player } from '../components/Player';
 interface Props {
 	title: string;
 }
@@ -10,7 +12,13 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="en">
 	<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Astro Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content={Astro.generator}>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 		<title>	{title} </title>
+    <ViewTransitions fallback="none"/>
 	</head>
 	<body>
 		<div id="app" class="relative h-screen p-2 gap-2">
@@ -18,16 +26,15 @@ const { title } = Astro.props;
 				<AsideMenu />
 			</aside>
 
-			<main class="[grid-area:main] rounded-lg bg-zinc-990 overflow-y-auto">
-				MAIN
+			<main class="[grid-area:main] rounded-lg bg-zinc-900 overflow-y-auto">
+        <slot/>
 			</main>
 
 			<footer class="[grid-area:player] min-h-[60px] ">
-				PLAYER
+				<Player client:load transition:name="media-player" transition:persist/>
 			</footer>
 			
 		</div>
-		<slot />
 	</body>
 </html>
 <style>
