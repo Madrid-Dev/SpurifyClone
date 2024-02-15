@@ -3,6 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import Card from '../../components/Card.astro';
 import PlayListItemCard from '../../components/PlayListItemCard.astro'
 import { allPlaylists, songs } from '../../lib/data';
+import MusicTable from './../../components/MusicTable.astro'
+import { CardPlayButton } from '../../components/CardPlayButton';
+
 
 //Taking id from URL
 const {id} = Astro.params
@@ -33,45 +36,53 @@ export function getStaticPaths() {          //This is valid for static paths, bu
         transition:name = `playlist ${id} box`
 	>
 
-	<!---PAGE HEADER -->
-	<header class="flex flex-row gap-8 px-6 mt-20">
-		<picture class="aspect-square w-52 h-52 flex-none">
-			<img 
-				src={playlist?.cover} 
-				alt={`Cover of ${playlist?.title}`} 
-				class="object-cover w-full h-full shadow-lg"
-				transition:name = `playlist ${playlist?.id} image`
-			>
-		</picture>
+		<!---PAGE HEADER -->
+		<header class="flex flex-row gap-8 px-6 mt-20">
+			<picture class="aspect-square w-52 h-52 flex-none">
+				<img 
+					src={playlist?.cover} 
+					alt={`Cover of ${playlist?.title}`} 
+					class="object-cover w-full h-full shadow-lg"
+					transition:name = `playlist ${playlist?.id} image`
+				>
+			</picture>
 
-		<div class="flex flex-col justify-between">
-			<h2 class="flex flex-1 items-end">Playlist</h2>
-			<div>
-			  <h1 class="text-5xl font-bold block text-white">
-				{playlist?.title}
-				<span transition:name=`playlist ${playlist?.id} title`></span>
-			  </h1>
-			</div>
-	
-			<div class="flex-1 flex items-end">
-			  <div class="text-sm text-gray-300 font-normal">
-				<div transition:name=`playlist ${playlist?.id} artists`>
-				  <span>{playlist?.artists.join(", ")}</span>
+			<div class="flex flex-col justify-between">
+				<h2 class="flex flex-1 items-end">Playlist</h2>
+				<div>
+				<h1 class="text-5xl font-bold block text-white">
+					{playlist?.title}
+					<span transition:name=`playlist ${playlist?.id} title`></span>
+				</h1>
 				</div>
-				<p class="mt-1">
-				  <span class="text-white">{playListSongs.length} canciones</span>,
-				  3 h aproximadamente
-				</p>
-			  </div>
-			</div>
-	</header>
 		
+				<div class="flex-1 flex items-end">
+					<div class="text-sm text-gray-300 font-normal">
+						<div transition:name=`playlist ${playlist?.id} artists`>
+						<span>{playlist?.artists.join(", ")}</span>
+						</div>
+						<p class="mt-1">
+						<span class="text-white">{playListSongs.length} canciones</span>,
+						3 h aproximadamente
+						</p>
+					</div>
+				</div>
+
+			</header>
+			
+			<div class="pt-14 pl-8">
+				<CardPlayButton id={id} size="Big" client:load />
+			</div>
 
 		<div
 			class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/80 -z-10"
 		>
 
 		</div>
+		<section class="p-6">
+			<MusicTable songs={playListSongs}/>
+		</section>
+		
 	</div>
 </Layout>
 
